@@ -1,6 +1,6 @@
 <?php
 
-echo "<title>Accueil > Modification Etablissement</title>";
+echo "<title>Accueil > Gestion Etablissement > Modification Etablissements</title>";
 include("_debut.inc.php");
 include("_gestionBase.inc.php"); 
 include("_controlesEtGestionErreurs.inc.php");

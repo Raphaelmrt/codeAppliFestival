@@ -1,6 +1,6 @@
 <?php
 
-echo "<title>Accueil > Modification Attributions</title>";
+echo "<title>Accueil > Attribution chambres > Modification Attributions</title>";
 include("_debut.inc.php");
 include("_gestionBase.inc.php"); 
 include("_controlesEtGestionErreurs.inc.php");

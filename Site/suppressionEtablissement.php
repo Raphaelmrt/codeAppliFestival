@@ -1,5 +1,6 @@
 <?php //Il manquait la balise php
 
+echo "<title>Accueil > Suppression Etablissement</title>";
 include("_debut.inc.php");
 include("_gestionBase.inc.php"); 
 include("_controlesEtGestionErreurs.inc.php");

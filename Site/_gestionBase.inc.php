@@ -28,7 +28,7 @@ function connect()
    $dsn ='mysql:host=localhost;dbname=festival;port:3308;charset=UTF-8';
    try{
       $dbh = new PDO($dsn,$login,$mdp);
-
+      $dbh->exec("set names utf8");
    }catch(PDOException $e){
       print "Erreur !:" .$e -> getMessage()."<br/>";
       die();
@@ -178,7 +178,7 @@ function estModifOffreCorrecte($connexion, $idEtab, $nombreChambres)
 
 function obtenirReqIdNomGroupesAHeberger()
 {
-   $req="select id, nom from Groupe where hebergement='O' order by id";
+   $req="select id, nom, nompays, nombrePersonnes  from Groupe where hebergement='O' order by id"; // ajout du champ nompays et nombrespersonnes
    return $req;
 }
 
@@ -207,7 +207,8 @@ function existeAttributionsEtab($connexion, $id)
 // Retourne le nombre de chambres occupées pour l'id étab transmis
 function obtenirNbOccup($connexion, $idEtab)
 {
-   $req="select IFNULL(sum(nombreChambres), 0) as totalChambresOccup from Attribution where idEtab='$idEtab'";
+   $req="select IFNULL(sum(nombreChambres), 0) as totalChambresOccup from
+        Attribution where idEtab='$idEtab'";
    $rsOccup=$connexion->query($req); // modification de la ligne de code en pdo
    $lgOccup=$rsOccup->fetchAll(); // modification de la ligne de code en pdo
    foreach ($lgOccup as $row)
@@ -216,7 +217,6 @@ function obtenirNbOccup($connexion, $idEtab)
    }
    return $totalChambresOccup; // modification en foreach
 }
-
 // Retourne si l'établissement est complet
 function obtenirEtabComplet($connexion, $id)
 {
@@ -229,7 +229,6 @@ function obtenirEtabComplet($connexion, $id)
    }
    return $totalChambresOccup; // modification en foreach
 }
-
 // Met à jour (suppression, modification ou ajout) l'attribution correspondant à
 // l'id étab et à l'id groupe transmis
 function modifierAttribChamb($connexion, $idEtab, $idGroupe, $nbChambres)
@@ -259,7 +258,7 @@ function modifierAttribChamb($connexion, $idEtab, $idGroupe, $nbChambres)
 // dans l'établissement transmis
 function obtenirReqGroupesEtab($id)
 {
-   $req="select distinct id, nom from Groupe, Attribution where 
+   $req="select distinct id, nom, nompays from Groupe, Attribution where 
         Attribution.idGroupe=Groupe.id and idEtab='$id'";
    return $req;
 }

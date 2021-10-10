@@ -27,6 +27,10 @@ nom varchar(50) not null,
 identiteResponsable varchar(40) default null,
 adressePostale varchar(120) default null,
 nombrePersonnes integer not null, 
+nomPays varchar(40) not null, 
+hebergement char(1) not null,
+constraint pk_Groupe primary key(id))
+ENGINE=INNODB; 
 
 hebergement char(1) not null,
 constraint pk_Groupe primary key(id))

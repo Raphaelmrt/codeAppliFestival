@@ -120,7 +120,10 @@ class='tabQuadrille'>";
          $idEtab=$row["id"];
          $nbOffre=$row["nombreChambresOffertes"];
          $nbOccup=obtenirNbOccup($connexion, $idEtab);
-                   
+         echo"<form method='POST' action='modificationAttributions.php'>
+         <input type='hidden' value='validerModifAttrib' name='action'>
+         <input type='hidden' value='$idEtab' name='idEtab'>
+         <input type='hidden' value='$idGroupe' name='idGroupe'>";          
          // Calcul du nombre de chambres libres
          $nbChLib = $nbOffre - $nbOccup;
                   
@@ -139,8 +142,17 @@ class='tabQuadrille'>";
             $nbMax = $nbChLib + $nbOccupGroupe;
             echo "
             <td class='reserve'>
-            <a href='donnerNbChambres.php?idEtab=$idEtab&amp;idGroupe=$idGroupe&amp;nbChambres=$nbMax'>
-            $nbOccupGroupe</a></td>";
+             <select name ='nbChambres'>"; // menu déroulant 
+             for ($i=0;$i<=$nbMax; $i++)
+             {
+                
+                if ($nbOccupGroupe == $i)
+                echo "<option selected> $i </option>";
+                else
+                echo "<option>$i</option>";
+             } 
+             echo "</select>&nbsp<input type='submit' value='valider'></form></td>";
+
          }
          else
          {
@@ -149,10 +161,17 @@ class='tabQuadrille'>";
             // des chambres libres sinon rien n'est affiché     
             if ($nbChLib != 0)
             {
+               if ($nbChLib<$nbChambres-$nbChambrestotal)
+               $nbMax=$nbChLib;
+               else $nbMax=$nbChambres-$nbChambrestotal;
                echo "
                <td class='reserveSiLien'>
-               <a href='donnerNbChambres.php?idEtab=$idEtab&amp;idGroupe=$idGroupe&amp;nbChambres=$nbChLib'>
-               __</a></td>";
+               <select name ='nbChambres'><option selected>0</option>"; // menu déroulant 
+             for ($i=1;$i<=$nbMax; $i++)
+             {
+                echo "<option>$i</option>";
+             } 
+             echo "</select>&nbsp<input type='submit' value='valider'></form></td>";
             }
             else
             {

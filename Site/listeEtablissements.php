@@ -73,7 +73,7 @@ class='tabNonQuadrille'>
             {
                 // Ajout du nombre d'attributions par établissement
                echo "
-               <td width='16%' align='center'>($nbOccup attributions)</td>";             
+               <td width='16%' align='center'>($nbOccup attributions / $nbmax)</td>";             
             }
          }
 			echo "

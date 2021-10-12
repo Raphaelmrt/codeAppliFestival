@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `Groupe`;
 DROP TABLE IF EXISTS `Etablissement`;
 
 create table Etablissement 
-(id char(8) not null, 
+(id int(8) not null,
 nom varchar(45) not null,
 adresseRue varchar(45) not null, 
 codePostal char(5) not null, 
@@ -22,7 +22,7 @@ constraint pk_Etablissement primary key(id))
 ENGINE=INNODB;
 
 create table Groupe
-(id char(4) not null, 
+(id int(4) not null, 
 nom varchar(50) not null, 
 identiteResponsable varchar(40) default null,
 adressePostale varchar(120) default null,
@@ -32,13 +32,9 @@ hebergement char(1) not null,
 constraint pk_Groupe primary key(id))
 ENGINE=INNODB; 
 
-hebergement char(1) not null,
-constraint pk_Groupe primary key(id))
-ENGINE=INNODB;
-
 create table Attribution
-(idEtab char(8) not null references Etablissement(id),
-idGroupe char(4) not null references Groupe(id),  
+(idEtab int(8) not null references Etablissement(id),
+idGroupe int(4) not null references Groupe(id),  
 nombreChambres integer not null,
 constraint pk_Attribution primary key(idEtab, idGroupe))
 ENGINE=INNODB;

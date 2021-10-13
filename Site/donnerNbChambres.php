@@ -1,5 +1,6 @@
 <?php
 
+echo "<title>Accueil > Attribution chambres > Modification Attributions > Donner nombre chambres</title>";
 include("_debut.inc.php");
 include("_gestionBase.inc.php"); 
 include("_controlesEtGestionErreurs.inc.php");

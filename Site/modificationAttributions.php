@@ -1,5 +1,6 @@
 <?php
 
+echo "<title>Accueil > Attribution chambres > Modification Attributions</title>";
 include("_debut.inc.php");
 include("_gestionBase.inc.php"); 
 include("_controlesEtGestionErreurs.inc.php");
@@ -29,7 +30,7 @@ if (!$connexion)
 // Recherche du nombre d'établissements offrant des chambres pour le 
 // dimensionnement des colonnes
 $nbEtabOffrantChambres=obtenirNbEtabOffrantChambres($connexion);
-$nb=$nbEtabOffrantChambres+1;
+$nb=$nbEtabOffrantChambres+3;
 // Détermination du pourcentage de largeur des colonnes "établissements"
 $pourcCol=50/$nbEtabOffrantChambres;
 
@@ -59,7 +60,8 @@ class='tabQuadrille'>";
    // AFFICHAGE DE LA 2ÈME LIGNE D'EN-TÊTE (ÉTABLISSEMENTS)
    echo "
    <tr class='ligneTabQuad'>
-      <td>&nbsp;</td>";
+      <td>Nom Groupe</td>
+      <td>Nombre de chambres demandées";
       
    $req=obtenirReqEtablissementsOffrantChambres();
    $rsEtab=$connexion->query($req); // modification de la ligne de code en pdo
@@ -67,6 +69,7 @@ class='tabQuadrille'>";
 
    // Boucle sur les établissements (pour afficher le nom de l'établissement et 
    // le nombre de chambres encore disponibles)
+   
    foreach ($lgEtab as $row)
    {
       $idEtab=$row["id"];
@@ -80,9 +83,9 @@ class='tabQuadrille'>";
       <td valign='top' width='$pourcCol%'><i>Disponibilités : $nbChLib </i> <br>
       $nom </td>";
       $lgEtab=$rsEtab->fetchAll(); // modification de la ligne de code en pdo
-   }
+   } 
    echo "
-   </tr>"; 
+      <td>Nombre de chambres réservées</td>";
 
    // CORPS DU TABLEAU : CONSTITUTION D'UNE LIGNE PAR GROUPE À HÉBERGER AVEC LES 
    // CHAMBRES ATTRIBUÉES ET LES LIENS POUR EFFECTUER OU MODIFIER LES ATTRIBUTIONS
@@ -96,9 +99,17 @@ class='tabQuadrille'>";
    {
       $idGroupe=$row['id'];
       $nom=$row['nom'];
+      $nompays=$row['nompays'];
+      $nbChambres =  intdiv($row['nombrePersonnes'],3);
+      if($row['nombrePersonnes']%3>0)
+      {
+         $nbChambres = $nbChambres + 1;
+      }
+      $nbChambrestotal = 0;
       echo "
       <tr class='ligneTabQuad'>
-         <td width='25%'>$nom</td>";
+         <td width='25%'>$nom ($nompays)</td>
+         <td> $nbChambres </td>"; // affiche les nombre de chambres demandées
       $req=obtenirReqEtablissementsOffrantChambres();
       $rsEtab=$connexion->query($req); // modification de la ligne de code en pdo
       $lgEtab=$rsEtab->fetchAll(); // modification de la ligne de code en pdo
@@ -109,14 +120,17 @@ class='tabQuadrille'>";
          $idEtab=$row["id"];
          $nbOffre=$row["nombreChambresOffertes"];
          $nbOccup=obtenirNbOccup($connexion, $idEtab);
-                   
+         echo"<form method='POST' action='modificationAttributions.php'>
+         <input type='hidden' value='validerModifAttrib' name='action'>
+         <input type='hidden' value='$idEtab' name='idEtab'>
+         <input type='hidden' value='$idGroupe' name='idGroupe'>";          
          // Calcul du nombre de chambres libres
          $nbChLib = $nbOffre - $nbOccup;
                   
          // On recherche si des chambres ont déjà été attribuées à ce groupe
          // dans cet établissement
          $nbOccupGroupe=obtenirNbOccupGroupe($connexion, $idEtab, $idGroupe);
-         
+         $nbChambrestotal += $nbOccupGroupe;
          // Cas où des chambres ont déjà été attribuées à ce groupe dans cet
          // établissement
          if ($nbOccupGroupe!=0)
@@ -128,8 +142,17 @@ class='tabQuadrille'>";
             $nbMax = $nbChLib + $nbOccupGroupe;
             echo "
             <td class='reserve'>
-            <a href='donnerNbChambres.php?idEtab=$idEtab&amp;idGroupe=$idGroupe&amp;nbChambres=$nbMax'>
-            $nbOccupGroupe</a></td>";
+             <select name ='nbChambres'>"; // menu déroulant 
+             for ($i=0;$i<=$nbMax; $i++)
+             {
+                
+                if ($nbOccupGroupe == $i)
+                echo "<option selected> $i </option>";
+                else
+                echo "<option>$i</option>";
+             } 
+             echo "</select>&nbsp<input type='submit' value='valider'></form></td>";
+
          }
          else
          {
@@ -138,10 +161,17 @@ class='tabQuadrille'>";
             // des chambres libres sinon rien n'est affiché     
             if ($nbChLib != 0)
             {
+               if ($nbChLib<$nbChambres-$nbChambrestotal)
+               $nbMax=$nbChLib;
+               else $nbMax=$nbChambres-$nbChambrestotal;
                echo "
                <td class='reserveSiLien'>
-               <a href='donnerNbChambres.php?idEtab=$idEtab&amp;idGroupe=$idGroupe&amp;nbChambres=$nbChLib'>
-               __</a></td>";
+               <select name ='nbChambres'><option selected>0</option>"; // menu déroulant 
+             for ($i=1;$i<=$nbMax; $i++)
+             {
+                echo "<option>$i</option>";
+             } 
+             echo "</select>&nbsp<input type='submit' value='valider'></form></td>";
             }
             else
             {
@@ -151,6 +181,8 @@ class='tabQuadrille'>";
          $lgEtab=$rsEtab->fetchAll(); // modification de la ligne de code en pdo
       } // Fin de la boucle sur les établissements    
       $lgGroupe=$rsGroupe->fetchAll(); // modification de la ligne de code en pdo
+      echo "
+   <td> $nbChambrestotal </td>"; // affichage  du nombre de chambres total dans la colone des chambres réservées
    } // Fin de la boucle sur les groupes à héberger
 echo "
 </table>"; // Fin du tableau principal

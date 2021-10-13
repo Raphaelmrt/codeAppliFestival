@@ -1,5 +1,6 @@
 <?php
 
+echo "<title>Accueil > Création Etablissement</title>";
 include("_debut.inc.php");
 include("_gestionBase.inc.php"); 
 include("_controlesEtGestionErreurs.inc.php");
@@ -98,8 +99,8 @@ echo "
       </tr>
       <tr class="ligneTabNonQuad">
          <td> Code postal*: </td>
-         <td><input type="text" value="'.$codePostal.'" name="codePostal" 
-         size="4" maxlength="5"></td>
+         <td><input type="number" value="'.$codePostal.'" name="codePostal" 
+         size="4" minlenght="5" maxlength="5"></td>
       </tr>
       <tr class="ligneTabNonQuad">
          <td> Ville*: </td>
@@ -108,12 +109,12 @@ echo "
       </tr>
       <tr class="ligneTabNonQuad">
          <td> Téléphone*: </td>
-         <td><input type="text" value="'.$tel.'" name="tel" size ="20" 
+         <td><input type="tel" value="'.$tel.'" name="tel" size ="20" 
          maxlength="10"></td>
       </tr>
       <tr class="ligneTabNonQuad">
          <td> E-mail: </td>
-         <td><input type="text" value="'.$adresseElectronique.'" name=
+         <td><input type="email" value="'.$adresseElectronique.'" name=
          "adresseElectronique" size ="75" maxlength="70"></td>
       </tr>
       <tr class="ligneTabNonQuad">

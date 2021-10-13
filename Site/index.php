@@ -8,7 +8,7 @@ echo "
    <tr>  
       <td class='texteAccueil'>
          Cette application web permet de gérer l'hébergement des groupes de sport 
-         durant le festival Sp'Or.
+         durant le FestivalSpor2.
       </td>
    </tr>
    <tr>

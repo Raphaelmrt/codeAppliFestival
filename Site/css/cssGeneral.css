@@ -6,7 +6,7 @@ Idem pour background-color) */
 /* Style de base pour la page (couleur fond : ocre, couleur texte : noir) */
 .basePage 
 {
-   background-color:#FFDD88;
+   background-color:#686868;
    color:black;
    font:11px Arial, Helvetica, sans-serif;
 }
@@ -14,8 +14,8 @@ Idem pour background-color) */
 /* Style pour le titre (couleur du texte : rouge) */
 .titre 
 {
-   background-color:#FFDD88;
-   color:#F50033;
+   background-color:#686868;
+   color:#FFFFFF;
    font:30px Arial, Helvetica, sans-serif;
    text-align:center;
 }
@@ -68,6 +68,7 @@ table.tabMenu td
    font-weight:bold;
    font-style:italic;
    text-align:left;
+   color: #DDFDFF;
 }
 
 /* STYLES POUR LES TABLEAUX QUADRILLÉS */
@@ -87,7 +88,7 @@ table.tabQuadrille td
 nuances de jaune et texte centré */
 tr.enTeteTabQuad
 {
-   background-image:url('../images/xpBarre.jpg');
+   background-image:url('../images/xpBarre.jpg'); 
    height:21px;
    text-align:center;
 } 
